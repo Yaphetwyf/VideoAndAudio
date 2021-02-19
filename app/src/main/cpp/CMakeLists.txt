@@ -19,15 +19,28 @@ add_library( # Sets the name of the library.
         # Provides a relative path to your source file(s).
         native-lib.cpp)
 
+add_library(people-lib
+        SHARED
+        people/people.cpp
+        )
+
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because CMake includes system libraries in the search path by
 # default, you only need to specify the name of the public NDK library
 # you want to add. CMake verifies that the library exists before
 # completing its build.
-
+#cmake语法学习
 set(var message)
 message(${var})
-message(${CMAKE_CURRENT_LIST_FILE})
+message(${CMAKE_CURRENT_LIST_FILE})#文件路径
+message(${CMAKE_CURRENT_LIST_DIR})
+
+IF(TRUE)#通过这些语句来编译不同平台的so库
+    MESSAGE("THIS IS TRUE")
+ENDIF(false)
+MESSAGE("THIS IS UN TRUE")
+
+include_directories(people/)#将people文件夹路径放在本地搜索路径下（好处：cpp文件中可以使用include<>进行导入）
 find_library( # Sets the name of the path variable.
         log-lib
 
@@ -42,6 +55,8 @@ find_library( # Sets the name of the path variable.
 target_link_libraries( # Specifies the target library.
         native-lib
 
+        #链接动态库  native-lib去关联people
+        people-lib
         # Links the target library to the log library
         # included in the NDK.
         ${log-lib})
